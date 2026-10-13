@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#F3EFE5">
+    <title>PayXray — Operating Systems Laboratory</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <a class="brand" href="/" aria-label="PayXray home">
+            <span class="brand-mark">PX</span>
+            <span>
+                <strong>PayXray</strong>
+                <small>OS LABORATORY</small>
+            </span>
+        </a>
+
+        <div class="side-label">SIMULATION LABS</div>
+        <nav class="lab-nav" aria-label="Simulation labs">
+            <button class="nav-link active" data-mode="race_condition"
+                    aria-pressed="true">
+                <span class="nav-icon">⌁</span>
+                <span>Race Condition</span>
+                <span class="nav-dot"></span>
+            </button>
+
+            <button class="nav-link" data-mode="safe_synchronization"
+                    aria-pressed="false">
+                <span class="nav-icon">⊞</span>
+                <span>Safe Synchronization</span>
+                <span class="nav-dot"></span>
+            </button>
+
+            <button class="nav-link"
+                    data-mode="deadlock_lab"
+                    aria-pressed="false">
+                <span class="nav-icon">↔</span>
+                <span>Deadlock Lab</span>
+                <span class="nav-dot"></span>
+            </button>
+
+            <button class="nav-link"
+                    data-mode="thread_scheduler"
+                    aria-pressed="false">
+                <span class="nav-icon">⇄</span>
+                <span>Thread Scheduler</span>
+                <span class="nav-dot"></span>
+            </button>
+
+            <button class="nav-link"
+                    data-mode="cpu_scheduling"
+                    aria-pressed="false">
+                <span class="nav-icon">◷</span>
+                <span>CPU Scheduling</span>
+                <span class="nav-dot"></span>
+            </button>
+
+            
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="local-indicator">
+                <span class="status-dot green"></span>
+                <span>SIMULATED ENVIRONMENT</span>
+            </div>
+            <p>No real bank accounts, payments, or external transactions.</p>
+            <div class="sidebar-version">PAYXRAY · EDUCATIONAL EDITION</div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <div class="eyebrow">OPERATING SYSTEMS / CONCURRENCY</div>
+                <h1 id="page-title">Race Condition Lab</h1>
+                <p class="page-subtitle" id="page-subtitle">
+                    Observe how concurrent threads can overwrite shared data.
+                </p>
+            </div>
+
+            <div class="backend-badge" id="backend-status" role="status">
+                <span class="status-dot"></span>
+                <span>Connecting to backend…</span>
+            </div>
+        </header>
+
+        <section class="metrics-grid" aria-label="Simulation summary">
+            <article class="metric-card">
+                <span class="metric-label">CURRENT BALANCE</span>
+                <strong class="metric-value" id="current-balance">₹1,000</strong>
+                <span class="metric-note">Shared account resource</span>
+            </article>
+
+            <article class="metric-card">
+                <span class="metric-label">EXPECTED BALANCE</span>
+                <strong class="metric-value" id="expected-balance">—</strong>
+                <span class="metric-note">Based on valid operations</span>
+            </article>
+
+            <article class="metric-card">
+                <span class="metric-label">EXECUTION STEP</span>
+                <strong class="metric-value" id="step-counter">0 / 0</strong>
+                <span class="metric-note">Recorded backend events</span>
+            </article>
+
+            <article class="metric-card">
+                <span class="metric-label">EXPERIMENT STATUS</span>
+                <strong class="metric-value status-text" id="outcome-status">READY</strong>
+                <span class="metric-note" id="outcome-note">No experiment running</span>
+            </article>
+        </section>
+
+        <div class="dashboard-grid">
+            <section class="panel workspace-panel">
+                <div class="panel-heading">
+                    <div>
+                        <div class="eyebrow">LIVE WORKSPACE</div>
+                        <h2>Execution map</h2>
+                    </div>
+                    <span class="small-tag" id="mode-tag">UNSAFE EXECUTION</span>
+                </div>
+
+                
+<p class="panel-description" id="workspace-description">
+    Watch the transaction packet move through the system stages. The highlighted
+    block follows the Python backend's recorded execution events.
+</p>
+
+<!-- CPU Scheduling workspace: shown only in CPU Scheduling Lab -->
+<div id="scheduling-workspace" hidden>
+    <div class="schedule-summary-grid">
+        <article class="resource-card">
+            <div class="resource-heading">
+                <span class="resource-icon">◷</span>
+                <div>
+                    <strong>Scheduling Algorithm</strong>
+                    <small id="schedule-algorithm-name">FCFS</small>
+                </div>
+            </div>
+        </article>
+
+        <article class="resource-card">
+            <div class="resource-heading">
+                <span class="resource-icon">▤</span>
+                <div>
+                    <strong>Total CPU Time</strong>
+                    <small id="schedule-total-time">— time units</small>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <div class="lane-section">
+        <div class="lane-title">
+            <span>CPU EXECUTION TIMELINE</span>
+            <span class="live-label">
+                <span class="status-dot"></span> SCHEDULE REPLAY
+            </span>
+        </div>
+
+        <div class="gantt-chart" id="gantt-chart" aria-live="polite">
+            <div class="empty-state">
+                <strong>No schedule generated yet</strong>
+                <p>Run CPU Scheduling to generate the Gantt chart.</p>
+            </div>
+        </div>
+
+        <div class="gantt-axis" id="gantt-axis"></div>
+    </div>
+
+    <div class="schedule-metrics">
+        <article class="resource-card">
+            <strong>Average Waiting Time</strong>
+            <span class="account-balance" id="schedule-waiting-time">—</span>
+        </article>
+
+        <article class="resource-card">
+            <strong>Average Turnaround Time</strong>
+            <span class="account-balance" id="schedule-turnaround-time">—</span>
+        </article>
+
+        <article class="resource-card">
+            <strong>Average Response Time</strong>
+            <span class="account-balance" id="schedule-response-time">—</span>
+        </article>
+    </div>
+
+    <div class="schedule-table-wrap">
+        <div class="lane-title">PROCESS PERFORMANCE</div>
+
+        <table class="schedule-table">
+            <thead>
+                <tr>
+                    <th>Process</th>
+                    <th>Arrival</th>
+                    <th>Burst</th>
+                    <th>Completion</th>
+                    <th>Waiting</th>
+                    <th>Turnaround</th>
+                </tr>
+            </thead>
+            <tbody id="schedule-results-body">
+                <tr>
+                    <td colspan="6">Run a scheduling experiment to view metrics.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<!-- Thread Scheduler workspace -->
+<div id="thread-scheduler-workspace" hidden>
+    <div class="schedule-summary-grid">
+        <article class="resource-card">
+            <div class="resource-heading">
+                <span class="resource-icon">◷</span>
+                <div>
+                    <strong>Scheduling Policy</strong>
+                    <small id="thread-scheduler-algorithm">Round Robin</small>
+                </div>
+            </div>
+        </article>
+
+        <article class="resource-card">
+            <div class="resource-heading">
+                <span class="resource-icon">▤</span>
+                <div>
+                    <strong>CPU Operations</strong>
+                    <small id="thread-scheduler-total-time">0 operations</small>
+                </div>
+            </div>
+        </article>
+
+        <article class="resource-card">
+            <div class="resource-heading">
+                <span class="resource-icon">▣</span>
+                <div>
+                    <strong>Mutex Protection</strong>
+                    <small id="thread-scheduler-mutex-status">Disabled</small>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <div class="lane-section">
+        <div class="lane-title">
+            <span>THREAD STATES</span>
+            <span class="live-label">T1 / T2</span>
+        </div>
+
+        <div class="schedule-summary-grid">
+            <article class="resource-card">
+                <div class="resource-heading">
+                    <span class="thread-avatar">T1</span>
+                    <div>
+                        <strong>Transaction Thread T1</strong>
+                        <small id="thread-state-t1">READY</small>
+                    </div>
+                </div>
+                <p class="resource-detail" id="thread-detail-t1">
+                    Withdrawal transaction
+                </p>
+            </article>
+
+            <article class="resource-card">
+                <div class="resource-heading">
+                    <span class="thread-avatar thread-avatar-two">T2</span>
+                    <div>
+                        <strong>Transaction Thread T2</strong>
+                        <small id="thread-state-t2">READY</small>
+                    </div>
+                </div>
+                <p class="resource-detail" id="thread-detail-t2">
+                    Withdrawal transaction
+                </p>
+            </article>
+        </div>
+    </div>
+
+    <div class="lane-section">
+        <div class="lane-title">
+            <span>READY QUEUE</span>
+            <span class="live-label">WAITING FOR CPU</span>
+        </div>
+
+        <div class="resource-card">
+            <strong id="thread-ready-queue">T1 → T2</strong>
+            <p class="resource-detail">
+                Runnable threads waiting for their next CPU turn.
+            </p>
+        </div>
+    </div>
+
+    <div class="lane-section">
+        <div class="lane-title">
+            <span>TRANSACTION EXECUTION TIMELINE</span>
+            <span class="live-label">READ · CALCULATE · WRITE</span>
+        </div>
+
+        <div class="gantt-chart" id="thread-gantt-chart" aria-live="polite">
+            <div class="empty-state">
+                <strong>No thread schedule yet</strong>
+                <p>Run the Thread Scheduler to see T1 and T2 interleave.</p>
+            </div>
+        </div>
+
+        <div class="gantt-axis" id="thread-gantt-axis"></div>
+    </div>
+
+    <div class="schedule-metrics">
+        <article class="resource-card">
+            <strong>Expected Balance</strong>
+            <span class="account-balance" id="thread-expected-balance">—</span>
+        </article>
+
+        <article class="resource-card">
+            <strong>Observed Balance</strong>
+            <span class="account-balance" id="thread-observed-balance">—</span>
+        </article>
+    </div>
+</div>
+<!-- End Thread Scheduler workspace -->
+
+
+<!-- Existing transaction visualization; unchanged -->
+<div class="flow-scroll" id="transaction-workspace">
+
+                    <div class="flow-map">
+                        <div class="flow-stage-track">
+                            <div class="flow-steps">
+                                <div class="flow-node" data-stage="request">
+                                    <span class="node-icon">01</span>
+                                    <strong>Request</strong>
+                                    <small>Transaction arrives</small>
+                                </div>
+                                <div class="flow-node" data-stage="queue">
+                                    <span class="node-icon">02</span>
+                                    <strong>Queue</strong>
+                                    <small>Request prepared</small>
+                                </div>
+                                <div class="flow-node" data-stage="thread">
+                                    <span class="node-icon">03</span>
+                                    <strong>Thread</strong>
+                                    <small>Operations execute</small>
+                                </div>
+                                <div class="flow-node" data-stage="lock">
+                                    <span class="node-icon">04</span>
+                                    <strong>Mutex</strong>
+                                    <small>Synchronization</small>
+                                </div>
+                                <div class="flow-node" data-stage="account">
+                                    <span class="node-icon">05</span>
+                                    <strong>Shared state</strong>
+                                    <small>Balance accessed</small>
+                                </div>
+                                <div class="flow-node" data-stage="result">
+                                    <span class="node-icon">06</span>
+                                    <strong>Result</strong>
+                                    <small>Outcome recorded</small>
+                                </div>
+                            </div>
+
+                            <!-- Dedicated path for the travelling transaction packet.
+                                 CSS positions its stations beneath the six stage blocks. -->
+                            <div class="flow-transport" aria-label="Transaction packet path">
+                                <div class="flow-rail"></div>
+                                <span class="flow-stop" data-flow-stop="request" aria-hidden="true"></span>
+                                <span class="flow-stop" data-flow-stop="queue" aria-hidden="true"></span>
+                                <span class="flow-stop" data-flow-stop="thread" aria-hidden="true"></span>
+                                <span class="flow-stop" data-flow-stop="lock" aria-hidden="true"></span>
+                                <span class="flow-stop" data-flow-stop="account" aria-hidden="true"></span>
+                                <span class="flow-stop" data-flow-stop="result" aria-hidden="true"></span>
+                                <div class="flow-packet" id="flow-packet" aria-hidden="true">
+                                    <span class="flow-packet-dot"></span>
+                                    <span id="flow-packet-label">TX-001</span>
+                                </div>
+                            </div>
+                            <p class="flow-hint" id="flow-hint">Run an experiment to start packet travel.</p>
+                        </div>
+
+                        <div class="lane-section">
+                            <div class="lane-title">
+                                <span>THREAD EXECUTION LANES</span>
+                                <span class="live-label"><span class="status-dot"></span> TRACE REPLAY</span>
+                            </div>
+
+                            <div class="thread-lane" id="lane-t1">
+                                <div class="lane-meta">
+                                    <span class="thread-avatar">T1</span>
+                                    <strong>Thread T1</strong>
+                                    <span class="state-chip" id="state-t1">Idle</span>
+                                </div>
+                                <div class="packet-track">
+                                    <div class="track-line"></div>
+                                    <span class="track-point" style="left:2%"></span>
+                                    <span class="track-point" style="left:20%"></span>
+                                    <span class="track-point" style="left:40%"></span>
+                                    <span class="track-point" style="left:60%"></span>
+                                    <span class="track-point" style="left:80%"></span>
+                                    <span class="track-point" style="left:98%"></span>
+                                    <div class="packet" id="packet-t1">
+                                        <span class="packet-dot"></span>
+                                        <span id="packet-label-t1">T1</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="thread-lane" id="lane-t2">
+                                <div class="lane-meta">
+                                    <span class="thread-avatar thread-avatar-two">T2</span>
+                                    <strong>Thread T2</strong>
+                                    <span class="state-chip" id="state-t2">Idle</span>
+                                </div>
+                                <div class="packet-track">
+                                    <div class="track-line"></div>
+                                    <span class="track-point" style="left:2%"></span>
+                                    <span class="track-point" style="left:20%"></span>
+                                    <span class="track-point" style="left:40%"></span>
+                                    <span class="track-point" style="left:60%"></span>
+                                    <span class="track-point" style="left:80%"></span>
+                                    <span class="track-point" style="left:98%"></span>
+                                    <div class="packet packet-two" id="packet-t2">
+                                        <span class="packet-dot"></span>
+                                        <span id="packet-label-t2">T2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="resource-grid">
+                            <article class="resource-card">
+                                <div class="resource-heading">
+                                    <span class="resource-icon">▣</span>
+                                    <div>
+                                        <strong>Mutex lock</strong>
+                                        <small>Account resource guard</small>
+                                    </div>
+                                </div>
+                                <div class="lock-state">
+                                    <span class="lock-indicator" id="lock-indicator"></span>
+                                    <strong id="lock-state">Available</strong>
+                                </div>
+                                <p class="resource-detail" id="lock-owner">No current owner</p>
+                            </article>
+
+                            <article class="resource-card">
+                                <div class="resource-heading">
+                                    <span class="resource-icon">≋</span>
+                                    <div>
+                                        <strong>Waiting queue</strong>
+                                        <small>Threads awaiting a lock</small>
+                                    </div>
+                                </div>
+                                <p class="queue-empty" id="waiting-queue">No waiting thread</p>
+                            </article>
+
+                            <article class="resource-card account-card">
+                                <div class="resource-heading">
+                                    <span class="resource-icon">₹</span>
+                                    <div>
+                                        <strong>Shared account</strong>
+                                        <small>ACC-001 · Simulated</small>
+                                    </div>
+                                </div>
+                                <strong class="account-balance" id="account-balance">₹1,000</strong>
+                                <div class="read-values">
+                                    <span id="readout-t1">T1 read: —</span>
+                                    <span id="readout-t2">T2 read: —</span>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="playback-panel">
+                    <div class="playback-heading">
+                        <div>
+                            <div class="eyebrow">EXECUTION REPLAY</div>
+                            <strong id="playback-title">Ready to run</strong>
+                        </div>
+                        <span id="speed-label" class="small-tag">1.0× SPEED</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+
+                    <p id="current-event" class="current-event" aria-live="polite">
+                        Start an experiment to inspect its backend-generated events.
+                    </p>
+
+                    <div class="playback-controls">
+                        <button class="button button-primary" id="run-btn" type="button">
+                            ▶ Run simulation
+                        </button>
+                        <button class="button" id="pause-btn" type="button" disabled>Ⅱ Pause</button>
+                        <button class="button" id="resume-btn" type="button" disabled>▶ Resume</button>
+                        <button class="button" id="restart-btn" type="button" disabled>↺ Restart</button>
+                        <button class="button" id="step-btn" type="button" disabled>Step →</button>
+                    </div>
+
+                    <label class="speed-control" for="speed-range">
+                        <span>Playback speed</span>
+                        <input id="speed-range" type="range" min="0.5" max="2" step="0.25" value="1">
+                        <span>0.5× – 2×</span>
+                    </label>
+                </div>
+            </section>
+
+            <section class="panel event-panel">
+            <div class="panel-heading">
+                <div>
+                    <div class="eyebrow">BACKEND TRACE</div>
+                    <h2>Execution event log</h2>
+                </div>
+                <span class="small-tag" id="event-count">0 EVENTS</span>
+            </div>
+            <p class="panel-description">
+                Events are recorded by Python. Select an entry to replay the trace up to that step.
+                Recorded event time and browser playback time are different measurements.
+            </p>
+            <div class="event-list" id="event-list" aria-live="polite">
+                <div class="empty-state">
+                    <span class="empty-icon">⌁</span>
+                    <strong>No execution trace yet</strong>
+                    <p>Run an experiment to populate the timeline.</p>
+                </div>
+            </div>
+        </section>
+            
+            <aside class="side-stack">
+                <section class="panel experiment-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <div class="eyebrow">WHAT-IF EXPERIMENT</div>
+                            <h2>Configuration</h2>
+                        </div>
+                        <span class="config-icon">⚙</span>
+                    </div>
+
+                    <form id="simulation-form">
+
+                        <label id="operation-label">Operation type</label>
+                            <div class="segmented" role="group" aria-labelledby="operation-label">
+                                <button type="button" class="segment" data-operation="deposit" aria-pressed="false">Deposit</button>
+                                <button type="button" class="segment active" data-operation="withdraw" aria-pressed="true">Withdraw</button>
+                            </div>
+                        
+                        <label for="initial-balance">Initial balance (₹)</label>
+                        <input id="initial-balance" name="initial_balance"
+                               type="number" min="0" max="1000000000"
+                               step="1" value="1000" required>
+
+
+                        <label for="amount-1" id="amount-1-label">T1 deposit (₹)</label>
+                        <input id="amount-1" name="amount-1"
+                               type="number" min="1" max="1000000000"
+                               step="1" value="100" required>
+
+                        <label for="amount-2" id="amount-2-label">T2 deposit (₹)</label>
+                        <input id="amount-2" name="amount-2"
+                               type="number" min="1" max="1000000000"
+                               step="1" value="200" required>
+
+                               
+<!-- CPU Scheduling configuration -->
+<div id="scheduling-config" hidden>
+    <div class="eyebrow">SCHEDULING ALGORITHM</div>
+
+    <label for="algorithm-select">Select algorithm</label>
+    <select id="algorithm-select" name="algorithm">
+        <option value="fcfs">FCFS — First Come, First Served</option>
+        <option value="sjf">SJF — Shortest Job First</option>
+        <option value="round_robin">Round Robin</option>
+    </select>
+
+    <div id="quantum-config" hidden>
+        <label for="quantum-input">Time quantum</label>
+        <input id="quantum-input" type="number"
+               min="1" max="1000" step="1" value="2">
+        <p class="panel-description">
+            Each process receives up to this many simulated CPU time units per turn.
+        </p>
+    </div>
+
+    <div class="eyebrow">PROCESS CONFIGURATION</div>
+    <p class="panel-description">
+        Set each process's arrival time and CPU burst time.
+    </p>
+
+    <table class="schedule-table">
+        <thead>
+            <tr>
+                <th>Process</th>
+                <th>Arrival</th>
+                <th>CPU burst</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>P1</td>
+                <td><input id="arrival-p1" type="number"
+                           min="0" max="1000" value="0" required></td>
+                <td><input id="burst-p1" type="number"
+                           min="1" max="1000" value="7" required></td>
+            </tr>
+            <tr>
+                <td>P2</td>
+                <td><input id="arrival-p2" type="number"
+                           min="0" max="1000" value="0" required></td>
+                <td><input id="burst-p2" type="number"
+                           min="1" max="1000" value="4" required></td>
+            </tr>
+            <tr>
+                <td>P3</td>
+                <td><input id="arrival-p3" type="number"
+                           min="0" max="1000" value="1" required></td>
+                <td><input id="burst-p3" type="number"
+                           min="1" max="1000" value="1" required></td>
+            </tr>
+            <tr>
+                <td>P4</td>
+                <td><input id="arrival-p4" type="number"
+                           min="0" max="1000" value="2" required></td>
+                <td><input id="burst-p4" type="number"
+                           min="1" max="1000" value="4" required></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- End CPU Scheduling configuration -->
+
+
+<!-- Thread Scheduler configuration -->
+<div id="thread-scheduler-config" hidden>
+    <div class="eyebrow">THREAD SCHEDULING POLICY</div>
+
+    <label for="thread-algorithm-select">Scheduling policy</label>
+    <select id="thread-algorithm-select" name="thread_algorithm">
+        <option value="fcfs">FCFS — Run each transaction to completion</option>
+        <option value="round_robin" selected>
+            Round Robin — Share CPU turns
+        </option>
+        <option value="priority">Priority — Select the higher-priority thread first</option>
+    </select>
+
+    <div id="thread-quantum-config">
+        <label for="thread-quantum-input">
+            Time quantum (transaction-operation steps)
+        </label>
+        <select id="thread-quantum-input" name="thread_quantum">
+            <option value="1" selected>1 operation per turn</option>
+            <option value="2">2 operations per turn</option>
+            <option value="3">3 operations per turn</option>
+        </select>
+        <p class="panel-description">
+            Round Robin lets a thread execute up to this many operations
+            before giving another ready thread a CPU turn.
+        </p>
+    </div>
+
+    <div id="thread-priority-config" hidden>
+        <label for="thread-priority-select">
+            Higher-priority thread
+        </label>
+        <select id="thread-priority-select" name="thread_priority">
+            <option value="T1" selected>T1 has higher priority</option>
+            <option value="T2">T2 has higher priority</option>
+        </select>
+    </div>
+
+    <div class="eyebrow">SYNCHRONIZATION</div>
+
+    <label for="thread-mutex-enabled">
+        Mutex protection
+    </label>
+    <label class="thread-mutex-option">
+        <input
+            id="thread-mutex-enabled"
+            name="thread_mutex_enabled"
+            type="checkbox"
+            value="true"
+        >
+        Enable account lock
+    </label>
+
+    <p class="panel-description">
+        Without the mutex, thread operations can interleave and overwrite
+        shared balance updates. With the mutex, the read, calculation,
+        and write sequence is protected.
+    </p>
+</div>
+<!-- End Thread Scheduler configuration -->
+
+
+
+                        <div class="scenario-note">
+                            <span class="note-symbol">i</span>
+                            <p id="scenario-description">
+                                Both threads read a shared balance before either writes.
+                                Watch for a lost update.
+                            </p>
+                        </div>
+
+                        <button class="button button-primary run-wide" type="submit"
+                                id="submit-btn">Run experiment</button>
+                    </form>
+
+                    <div class="error-message" id="error-message" role="alert" hidden></div>
+                </section>
+
+                <section class="panel concept-panel">
+                    <div class="eyebrow">LEARNING INSIGHT</div>
+                    <h2 id="concept-title">What are you observing?</h2>
+                    <p id="concept-description">
+                        A race condition occurs when concurrent operations access shared
+                        state and the result depends on their execution order.
+                    </p>
+                    <div class="concept-footer">
+                        <span class="concept-dot"></span>
+                        <span id="concept-label">CONCURRENCY FUNDAMENTALS</span>
+                    </div>
+                </section>
+
+                
+<section class="panel integrity-panel" aria-live="polite">
+    <div class="eyebrow">EXECUTION VALIDATION</div>
+    <h2>Correctness Monitor</h2>
+
+    <div class="integrity-state" id="integrity-state">
+        <span class="integrity-dot"></span>
+        <strong id="integrity-status">Awaiting experiment</strong>
+    </div>
+
+    <p id="integrity-description">
+        Run an experiment to check whether the observed balance
+        matches the expected transaction outcome.
+    </p>
+
+    <div class="integrity-rule">
+        <span>EXPECTED RULE</span>
+        <strong id="integrity-rule">
+            Final balance must match the valid operations.
+        </strong>
+    </div>
+</section>
+
+                
+            </aside>
+        </div>
+
+        
+
+        <footer class="page-footer">
+            <span>PAYXRAY · INTERACTIVE OS LABORATORY</span>
+            <span>Educational simulation · No real financial transactions</span>
+        </footer>
+    </main>
+</div>
+</body>
+</html>

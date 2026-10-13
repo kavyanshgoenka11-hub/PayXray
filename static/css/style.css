@@ -1,0 +1,1116 @@
+/* =========================================================
+   PayXray — warm ivory, cream and financial green
+   Responsive layout: workspace + trace on top;
+   configuration + learning insight + correctness below.
+   ========================================================= */
+
+:root {
+    color-scheme: light;
+    --bg: #F3EFE5;
+    --sidebar: #EAE5D9;
+    --panel: #FFFCF6;
+    --panel-alt: #F6F2E9;
+    --border: #DDD9CC;
+    --text: #26392D;
+    --muted: #6D786B;
+    --accent: #477D62;
+    --cyan: #568B80;
+    --green: #246847;
+    --amber: #A87932;
+    --red: #B44F4A;
+    --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+button, input { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .48; }
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.app-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 224px minmax(0, 1fr);
+}
+
+/* Sidebar */
+.sidebar {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 15px 18px;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 0 8px 30px;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.brand-mark {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    border: 1px solid #BED1C0;
+    border-radius: 12px;
+    background: #DCE8DD;
+    color: var(--green);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.brand strong { display: block; font-size: 19px; letter-spacing: -.7px; }
+.brand small {
+    display: block;
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+}
+
+.side-label, .eyebrow {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: 1.25px;
+}
+.side-label { padding: 0 10px 12px; }
+.lab-nav { display: grid; gap: 7px; }
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 46px;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: transparent;
+    color: #536458;
+    text-align: left;
+    font-size: 12px;
+}
+
+.nav-link.active {
+    border-color: #B8CEB8;
+    background: #D9E5D8;
+    color: #24523A;
+}
+
+.nav-icon {
+    width: 19px;
+    flex: 0 0 auto;
+    color: #397657;
+    font-size: 21px;
+    line-height: 1;
+    text-align: center;
+}
+
+.nav-dot {
+    width: 6px;
+    height: 6px;
+    margin-left: auto;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0;
+}
+.nav-link.active .nav-dot { opacity: 1; }
+.upcoming { color: #7B8277; cursor: default; }
+
+.soon-tag {
+    margin-left: auto;
+    padding: 2px 4px;
+    border: 1px solid #D5D1C5;
+    border-radius: 4px;
+    color: #778073;
+    font-size: 8px;
+    letter-spacing: .7px;
+}
+
+.sidebar-bottom { margin-top: auto; padding: 20px 9px 0; }
+.local-indicator {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #526455;
+    font-size: 9px;
+    letter-spacing: .6px;
+}
+.sidebar-bottom p { color: #697568; font-size: 11px; line-height: 1.7; }
+.sidebar-version {
+    margin-top: 18px;
+    padding-top: 15px;
+    border-top: 1px solid #D5D1C5;
+    color: #778072;
+    font-size: 9px;
+    letter-spacing: .7px;
+}
+
+.status-dot {
+    display: inline-block;
+    flex: 0 0 auto;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #A4ACA0;
+}
+.status-dot.green { background: #328054; box-shadow: 0 0 0 3px rgba(50,128,84,.10); }
+
+/* Main header */
+.main-content {
+    width: 100%;
+    max-width: 1900px;
+    min-width: 0;
+    margin: 0 auto;
+    padding: 24px clamp(16px, 2vw, 30px) 24px;
+}
+
+.topbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+h1, h2, p { margin-top: 0; }
+h1 { margin: 8px 0; font-size: clamp(25px, 2.2vw, 33px); line-height: 1.2; letter-spacing: -1px; }
+h2 { margin: 4px 0 0; font-size: 16px; line-height: 1.35; letter-spacing: -.2px; }
+.page-subtitle, .panel-description { margin-bottom: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+
+.backend-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border: 1px solid #C8DAC8;
+    border-radius: 100px;
+    background: #E1EBE0;
+    color: #326447;
+    font-size: 11px;
+    white-space: nowrap;
+}
+.backend-badge.online .status-dot { background: #328054; }
+.backend-badge.offline { color: #983F3C; background: #F6E7E2; border-color: #E7C4BE; }
+.backend-badge.offline .status-dot { background: var(--red); }
+
+/* Summary metrics */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.metric-card, .panel {
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--panel);
+    box-shadow: 0 4px 16px rgba(57,66,48,.045);
+}
+.metric-card { padding: 15px 16px; }
+.metric-label {
+    display: block;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: 1px;
+}
+.metric-value {
+    display: block;
+    margin: 10px 0 4px;
+    color: var(--text);
+    font-size: clamp(20px, 1.8vw, 26px);
+    font-weight: 680;
+    letter-spacing: -.7px;
+    overflow-wrap: anywhere;
+}
+.metric-note { color: #7A8477; font-size: 10px; }
+.status-text { font-size: 16px; letter-spacing: .1px; }
+
+/* Main arrangement:
+   Row 1: Live Workspace (left) + Backend Trace (right).
+   Row 2: Learning Insight directly below Backend Trace, while the workspace
+          continues on the left.
+   Row 3: What-If Experiment (left) + Execution Validation (right). */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-rows: max-content minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: start;
+}
+
+.panel { padding: 18px; }
+.panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.small-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 8px;
+    border: 1px solid #CCDCC9;
+    border-radius: 5px;
+    background: #E4EDE2;
+    color: #356849;
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: .6px;
+    white-space: nowrap;
+}
+
+.workspace-panel { grid-column: 1 / span 4; grid-row: 1 / span 2; min-width: 0; align-self: stretch; }
+.workspace-panel > .panel-description { margin: 10px 0 16px; }
+.workspace-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+
+/* Execution map and six blocks */
+.flow-scroll { overflow-x: auto; padding-bottom: 7px; }
+.flow-map { position: relative; min-width: 0; }
+.flow-steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 7px;
+    isolation: isolate;
+}
+
+.flow-node {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-width: 0;
+    min-height: 96px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 10px 8px;
+    border: 1px solid #E0DCCE;
+    border-radius: 10px;
+    background: #F7F4EC;
+    transition: background 180ms, border-color 180ms, transform 180ms, box-shadow 180ms;
+}
+.flow-node:not(:last-child)::after {
+    position: absolute;
+    z-index: 2;
+    top: 34px;
+    right: -8px;
+    color: #879383;
+    content: "›";
+    font-size: 22px;
+    font-weight: 400;
+}
+.node-icon {
+    margin-bottom: 8px;
+    padding: 2px 5px;
+    border: 1px solid #CEDACB;
+    border-radius: 4px;
+    background: #E5ECE1;
+    color: #386B4D;
+    font-size: 10px;
+}
+.flow-node strong { margin-bottom: 3px; color: var(--text); font-size: 10px; overflow-wrap: anywhere; }
+.flow-node small { color: var(--muted); font-size: 9px; line-height: 1.35; overflow-wrap: anywhere; }
+.flow-node.is-active {
+    transform: translateY(-2px);
+    border-color: #76A282;
+    background: #E2EDE2;
+    box-shadow: 0 4px 12px rgba(36,104,71,.09), 0 0 0 1px rgba(36,104,71,.06);
+}
+.flow-node.is-complete { border-color: #C3D8C1; }
+.flow-node.is-complete .node-icon { color: var(--green); }
+
+/* Packet path under the six blocks. Hidden when idle, visible during replay. */
+.flow-transport { position: relative; height: 34px; }
+
+.flow-rail {
+    position: absolute;
+    top: 16px;
+    left: 8.333%;
+    right: 8.333%;
+    height: 3px;
+    border-radius: 4px;
+    background: #D2DCCF;
+    opacity: 0;
+    transition: opacity 180ms;
+}
+
+.side-stack { display: contents; }
+
+.flow-stop {
+    position: absolute;
+    top: 12px;
+    width: 11px;
+    height: 11px;
+    transform: translateX(-50%);
+    border: 2px solid var(--panel);
+    border-radius: 50%;
+    background: #93A693;
+    opacity: 0;
+    transition: opacity 180ms;
+}
+.flow-stop[data-flow-stop="request"] { left: 8.333%; }
+.flow-stop[data-flow-stop="queue"]   { left: 25%; }
+.flow-stop[data-flow-stop="thread"]  { left: 41.667%; }
+.flow-stop[data-flow-stop="lock"]    { left: 58.333%; }
+.flow-stop[data-flow-stop="account"] { left: 75%; }
+.flow-stop[data-flow-stop="result"]  { left: 91.667%; }
+
+.flow-transport:has(.flow-packet.is-visible) .flow-rail,
+.flow-transport:has(.flow-packet.is-visible) .flow-stop { opacity: 1; }
+
+.flow-packet {
+    position: absolute;
+    z-index: 3;
+    top: 4px;
+    left: 8.333%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 145px;
+    padding: 5px 9px;
+    border: 1px solid #B4D4CC;
+    border-radius: 7px;
+    background: #DBEAE6;
+    color: #315F56;
+    box-shadow: 0 3px 9px rgba(47,79,55,.10);
+    font-size: 10px;
+    font-weight: 750;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%);
+    transition: left 520ms cubic-bezier(.22,.75,.32,1), background 180ms, border-color 180ms, opacity 180ms;
+}
+.flow-packet.is-visible { opacity: 1; }
+.flow-packet.is-waiting { background: #F5EBD6; border-color: #E6D1A8; color: #8C6329; }
+.flow-packet.is-error { background: #F4E1DD; border-color: #E7C4BE; color: #A74543; }
+.flow-packet-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #397E69; }
+.flow-packet.is-waiting .flow-packet-dot { background: #A87932; }
+.flow-packet.is-error .flow-packet-dot { background: #B44F4A; }
+
+.flow-hint { margin: 0 0 6px; color: var(--text); font-size: 14px; }
+
+/* Parallel T1 and T2 execution lanes */
+.lane-section {
+    margin-top: 12px;
+    padding: 13px 13px 6px;
+    border: 1px solid #E0DCCE;
+    border-radius: 11px;
+    background: #F5F2E9;
+}
+.lane-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: .85px;
+}
+.live-label { display: inline-flex; align-items: center; gap: 6px; color: #477454; font-size: 8px; }
+.live-label .status-dot { background: #39905C; }
+.thread-lane { padding: 10px 0 11px; border-top: 1px solid #E6E1D6; }
+.lane-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
+.lane-meta strong { font-size: 11px; }
+.thread-avatar {
+    display: grid;
+    place-items: center;
+    width: 27px;
+    height: 27px;
+    flex: 0 0 auto;
+    border: 1px solid #C0D8D4;
+    border-radius: 7px;
+    background: #DCE9E8;
+    color: #356B66;
+    font-size: 10px;
+    font-weight: 800;
+}
+.thread-avatar-two { border-color: #E0CCAA; background: #F0E4CF; color: #825D2D; }
+.state-chip {
+    margin-left: auto;
+    padding: 3px 7px;
+    border: 1px solid #DDDCCF;
+    border-radius: 100px;
+    background: #EEEDE4;
+    color: #687467;
+    font-size: 9px;
+}
+.state-chip.active { border-color: #C3DCD2; background: #E0EDE9; color: #356F62; }
+.state-chip.waiting { border-color: #E6D1A8; background: #F5EBD6; color: #8C6329; }
+.state-chip.success { border-color: #BFD6C0; background: #DDEBDD; color: #246847; }
+.state-chip.danger { border-color: #E7C4BE; background: #F4E1DD; color: #A74543; }
+.packet-track { position: relative; height: 25px; margin: 0 4px; }
+.track-line { position: absolute; top: 11px; right: 1%; left: 1%; height: 2px; background: #D2D9CA; }
+.track-point { position: absolute; z-index: 1; top: 7px; width: 9px; height: 9px; transform: translateX(-50%); border: 2px solid #F5F2E9; border-radius: 50%; background: #93A693; }
+.packet {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 2%;
+    display: none;
+    align-items: center;
+    gap: 5px;
+    max-width: 150px;
+    padding: 4px 7px;
+    transform: translateX(-4%);
+    border: 1px solid #B4D4CC;
+    border-radius: 5px;
+    background: #DBEAE6;
+    color: #315F56;
+    box-shadow: 0 3px 9px rgba(47,79,55,.07);
+    font-size: 9px;
+    white-space: nowrap;
+    transition: left 520ms cubic-bezier(.22,.75,.32,1);
+}
+.packet.is-visible { display: inline-flex; }
+.packet-two { border-color: #DFC69D; background: #F2E5D0; color: #795629; }
+.packet-dot { display: inline-block; width: 5px; height: 5px; flex: 0 0 auto; border-radius: 50%; background: #397E69; }
+.packet-two .packet-dot { background: #AE7A30; }
+
+/* Shared resources */
+.resource-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-top: 12px; }
+.resource-card { min-width: 0; min-height: 135px; padding: 11px; border: 1px solid #E0DCCE; border-radius: 10px; background: #F7F4EC; }
+.resource-heading { display: flex; align-items: center; gap: 8px; }
+.resource-icon { display: grid; place-items: center; width: 29px; height: 29px; flex: 0 0 auto; border: 1px solid #CEDACB; border-radius: 7px; background: #E5ECE1; color: #386B4D; font-size: 15px; }
+.resource-heading strong { display: block; color: var(--text); font-size: 10px; }
+.resource-heading small { display: block; margin-top: 2px; color: var(--muted); font-size: 9px; }
+.lock-state { display: flex; align-items: center; gap: 7px; margin-top: 14px; color: #344B3C; font-size: 11px; }
+.lock-indicator { width: 9px; height: 9px; flex: 0 0 auto; border-radius: 3px; background: #39905C; }
+.lock-indicator.occupied { background: #C18A36; box-shadow: 0 0 0 3px rgba(193,138,54,.12); }
+.resource-detail, .queue-empty { margin: 6px 0 0; color: var(--muted); font-size: 10px; overflow-wrap: anywhere; }
+.queue-empty.waiting { color: #946927; }
+.account-balance { display: block; margin: 12px 0 8px; color: var(--green); font-size: 21px; letter-spacing: -.4px; }
+.read-values { display: grid; gap: 3px; color: #667568; font-size: 9px; }
+
+/* Replay controls */
+.playback-panel { margin-top: 17px; padding-top: 16px; border-top: 1px solid var(--border); }
+.playback-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.playback-heading strong { display: block; margin-top: 5px; font-size: 12px; }
+.progress-track { height: 5px; margin-top: 13px; overflow: hidden; border-radius: 8px; background: #E1E3D7; }
+.progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#518764,#87B7A0); transition: width 180ms ease; }
+.current-event { min-height: 38px; margin: 12px 0; color: #526455; font-size: 11px; line-height: 1.7; }
+.playback-controls { display: flex; flex-wrap: wrap; gap: 7px; }
+.button { min-height: 36px; padding: 8px 11px; border: 1px solid #D7D7C9; border-radius: 7px; background: #F1EFE6; color: #395443; font-size: 10px; font-weight: 650; transition: border-color 150ms, background 150ms; }
+.button:not(:disabled):hover { border-color: #B8CEB8; background: #E5EBDD; }
+.button-primary { border-color: #2F714C; background: #2F714C; color: #fff; }
+.button-primary:not(:disabled):hover { border-color: #245D3D; background: #245D3D; }
+.speed-control { display: flex; align-items: center; gap: 11px; margin-top: 15px; color: #637164; font-size: 10px; }
+.speed-control input { min-width: 70px; flex: 1; accent-color: #397957; }
+
+/* Lower panels: Learning Insight follows Event Trace; Validation sits beside What-If. */
+.experiment-panel { grid-column: 1 / span 4; grid-row: 3; min-width: 0; }
+.concept-panel { grid-column: 5 / span 2; grid-row: 2; min-width: 0; align-self: start; }
+.integrity-panel { grid-column: 5 / span 2; grid-row: 3; min-width: 0; }
+
+.experiment-panel form { display: grid; gap: 8px; margin-top: 17px; }
+.experiment-panel label { margin-top: 5px; color: #526354; font-size: 10px; }
+.experiment-panel input {
+    width: 100%;
+    min-height: 39px;
+    padding: 9px 11px;
+    border: 1px solid #D9D8CA;
+    border-radius: 7px;
+    background: #F7F4EC;
+    color: var(--text);
+}
+.experiment-panel input:focus { border-color: #79A183; }
+.segmented {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid #D9D8CA;
+    border-radius: 9px;
+    background: #F0EEE4;
+}
+.segment {
+    min-height: 34px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: #536458;
+    font-size: 11px;
+    font-weight: 650;
+    transition: background 150ms, color 150ms, border-color 150ms;
+}
+.segment:hover { background: #E5EBDD; }
+.segment.active {
+    border-color: #2F714C;
+    background: #2F714C;
+    color: #fff;
+}
+
+.scenario-note { display: flex; gap: 9px; margin-top: 8px; padding: 11px; border: 1px solid #DCDDCF; border-radius: 8px; background: #F0F0E5; }
+.note-symbol { display: grid; place-items: center; width: 19px; height: 19px; flex: 0 0 auto; border-radius: 50%; background: #DCE8D8; color: #326547; font-size: 11px; font-weight: 800; }
+.scenario-note p { margin: 0; color: #596B59; font-size: 10px; line-height: 1.7; }
+.run-wide { width: 100%; min-height: 40px; margin-top: 5px; }
+.config-icon { display: grid; place-items: center; width: 31px; height: 31px; border: 1px solid #D9DCCF; border-radius: 8px; color: #397957; font-size: 17px; }
+.error-message { margin-top: 12px; padding: 10px; border: 1px solid #E7C4BE; border-radius: 8px; background: #F6E7E2; color: #983F3C; font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
+
+/* Learning insight */
+.concept-panel { background: #E8EDE0; border-color: #D3DDCA; }
+.concept-panel h2 { margin: 12px 0 8px; color: #2D4835; font-size: 15px; }
+.concept-panel p { margin-bottom: 18px; color: #596B59; font-size: 11px; line-height: 1.85; }
+.concept-footer { display: flex; align-items: center; gap: 7px; padding-top: 12px; border-top: 1px solid #D0DCC9; color: #477454; font-size: 8px; font-weight: 750; letter-spacing: .7px; }
+.concept-dot { width: 6px; height: 6px; border-radius: 50%; background: #397957; }
+
+/* Correctness monitor */
+.integrity-state { display: flex; align-items: center; gap: 9px; margin: 16px 0 12px; padding: 11px; border: 1px solid #D8DCCF; border-radius: 9px; background: #F5F2E9; color: #536455; font-size: 12px; }
+.integrity-dot { width: 9px; height: 9px; flex: 0 0 auto; border-radius: 50%; background: #A7A99D; }
+.integrity-state.is-good { border-color: #C1D9C1; background: #E2EEE1; color: #285E40; }
+.integrity-state.is-good .integrity-dot { background: #328054; }
+.integrity-state.is-warning { border-color: #E5D0A8; background: #F5EBD6; color: #855E26; }
+.integrity-state.is-warning .integrity-dot { background: #B88736; }
+.integrity-state.is-bad { border-color: #E5C2BC; background: #F5E3DF; color: #9F403D; }
+.integrity-state.is-bad .integrity-dot { background: #B44F4A; }
+.integrity-panel > p { color: #687568; font-size: 11px; line-height: 1.8; overflow-wrap: anywhere; }
+.integrity-rule { margin-top: 16px; padding-top: 13px; border-top: 1px solid #DDD9CC; }
+.integrity-rule > span { display: block; margin-bottom: 6px; color: #778072; font-size: 9px; font-weight: 750; letter-spacing: .8px; }
+.integrity-rule > strong { display: block; color: #344B3C; font-size: 11px; line-height: 1.7; }
+
+/* Backend trace beside the workspace, with its own scroll area */
+.event-panel {
+    grid-column: 5 / span 2;
+    grid-row: 1;
+    min-width: 0;
+    margin-top: 0;
+}
+.event-panel > .panel-description { margin: 9px 0 14px; }
+.event-list {
+    display: grid;
+    gap: 6px;
+    min-height: 280px;
+    max-height: clamp(360px, calc(100vh - 300px), 680px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 2px;
+    scrollbar-color: #C0CFC0 transparent;
+    scrollbar-width: thin;
+}
+.empty-state { padding: 28px 12px; border: 1px dashed #DCDDCF; border-radius: 10px; color: #536556; text-align: center; }
+.empty-icon { display: block; margin-bottom: 8px; color: #397957; font-size: 26px; }
+.empty-state strong { font-size: 12px; }
+.empty-state p { margin: 5px 0 0; color: #778274; font-size: 10px; }
+.event-row {
+    display: grid;
+    grid-template-columns: 34px minmax(0,1fr);
+    align-items: start;
+    gap: 8px;
+    width: 100%;
+    padding: 9px;
+    border: 1px solid #E0DCCE;
+    border-radius: 8px;
+    background: #F7F4EC;
+    color: #304335;
+    text-align: left;
+    transition: background 150ms, border-color 150ms;
+}
+.event-row:hover { background: #EEF0E5; }
+.event-row.active { border-color: #8CB297; background: #E5EEE2; }
+.event-seq { color: #397957; font-size: 10px; font-weight: 750; }
+.event-title { display: block; color: #304335; font-size: 10px; font-weight: 700; line-height: 1.4; overflow-wrap: anywhere; }
+.event-detail { display: block; margin-top: 3px; color: #68796C; font-size: 10px; line-height: 1.5; overflow-wrap: anywhere; }
+.event-meta { grid-column: 2; display: flex; gap: 9px; color: #738072; font-size: 9px; text-align: left; white-space: nowrap; }
+.event-meta em { display: inline; font-style: normal; }
+
+.page-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 22px; color: #778072; font-size: 9px; letter-spacing: .4px; }
+
+/* Intermediate laptop widths: keep the desktop panel proportions. */
+@media (max-width: 1180px) {
+    .app-shell { grid-template-columns: 205px minmax(0,1fr); }
+    .main-content { padding-right: 16px; padding-left: 16px; }
+    .dashboard-grid {
+        grid-template-columns: repeat(6, minmax(0,1fr));
+        grid-template-rows: max-content minmax(0, 1fr) auto;
+        gap: 12px;
+    }
+    .panel { padding: 14px; }
+    .flow-steps { gap: 5px; }
+    .flow-node { padding: 8px 6px; }
+    .resource-grid { gap: 6px; }
+    .resource-card { padding: 9px; }
+    .event-list { max-height: 460px; }
+}
+
+/* Narrower screens: stack panels in a readable single-column layout. */
+@media (max-width: 980px) {
+    .dashboard-grid {
+        grid-template-columns: minmax(0,1fr);
+        grid-template-rows: none;
+    }
+    .workspace-panel,
+    .event-panel,
+    .experiment-panel,
+    .concept-panel,
+    .integrity-panel {
+        grid-column: 1 / -1;
+        grid-row: auto;
+        align-self: stretch;
+    }
+    .event-list { max-height: 440px; }
+}
+
+@media (max-width: 760px) {
+    .app-shell { display: block; }
+    .sidebar { min-height: auto; padding: 14px; border-right: 0; border-bottom: 1px solid var(--border); }
+    .brand { padding: 0 3px 15px; }
+    .side-label { padding: 0 3px 8px; }
+    .lab-nav { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .sidebar-bottom { display: none; }
+    .main-content { padding: 20px 14px; }
+    .topbar { flex-direction: column; }
+    .backend-badge { white-space: normal; }
+    .metrics-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .side-stack { grid-template-columns: minmax(0,1fr); }
+    .integrity-panel { grid-column: auto; }
+    .resource-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+    .event-list { max-height: 380px; }
+}
+
+@media (max-width: 520px) {
+    .resource-grid { grid-template-columns: minmax(0,1fr); }
+    .resource-card { min-height: auto; }
+    .flow-map { min-width: 660px; }
+    .playback-controls .button { flex: 1 1 auto; }
+    .lane-title { align-items: flex-start; flex-direction: column; }
+    .speed-control { flex-wrap: wrap; }
+    .page-footer { flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+
+/* =========================================================
+   CPU Scheduling Lab — Gantt chart and process metrics
+   Additive styles only; existing labs remain unchanged.
+   ========================================================= */
+
+.schedule-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.schedule-summary-grid .resource-card {
+    min-height: 90px;
+}
+
+/* Gantt timeline container */
+.gantt-chart {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    min-width: 0;
+    min-height: 64px;
+    overflow-x: auto;
+    border: 1px solid #DDD9CC;
+    border-radius: 9px;
+    background: #F7F4EC;
+    scrollbar-width: thin;
+    scrollbar-color: #C0CFC0 transparent;
+}
+
+/* One CPU execution interval */
+.gantt-segment {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    min-height: 62px;
+    padding: 8px 4px;
+    overflow: hidden;
+    border-right: 2px solid #FFFCF6;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 750;
+    text-align: center;
+    white-space: nowrap;
+    transition: filter 160ms, box-shadow 160ms;
+}
+
+.gantt-segment:last-child {
+    border-right: 0;
+}
+
+.gantt-segment.is-active {
+    z-index: 1;
+    box-shadow: inset 0 0 0 3px #26392D;
+    filter: brightness(1.08);
+}
+
+.gantt-segment.is-idle {
+    background: #EAE5D9;
+    color: #6D786B;
+    border-right-color: #FFFCF6;
+}
+
+/* Consistent colors for the same process across time slices */
+.gantt-segment.process-p1 { background: #477D62; }
+.gantt-segment.process-p2 { background: #568B80; }
+.gantt-segment.process-p3 { background: #A87932; }
+.gantt-segment.process-p4 { background: #7894AA; }
+.gantt-segment.process-p5 { background: #8876A8; }
+.gantt-segment.process-p6 { background: #AD7771; }
+.gantt-segment.process-p7 { background: #658B72; }
+.gantt-segment.process-p8 { background: #967F55; }
+
+/* Simulated CPU time labels beneath the chart */
+.gantt-axis {
+    position: relative;
+    width: 100%;
+    height: 24px;
+    margin-top: 5px;
+    border-top: 1px solid #D5DCCF;
+    color: #6D786B;
+    font-size: 10px;
+}
+
+.gantt-axis span {
+    position: absolute;
+    top: 4px;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.gantt-axis span:first-child {
+    transform: none;
+}
+
+.gantt-axis span:last-child {
+    transform: translateX(-100%);
+}
+
+/* CPU scheduling performance metrics */
+.schedule-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.schedule-metrics .resource-card {
+    min-height: 100px;
+}
+
+.schedule-metrics .resource-card > strong {
+    display: block;
+    color: #536455;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.schedule-metrics .account-balance {
+    font-size: 20px;
+}
+
+/* Per-process results table */
+.schedule-table-wrap {
+    min-width: 0;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #DDD9CC;
+}
+
+.schedule-table-wrap .lane-title {
+    margin-bottom: 10px;
+}
+
+.schedule-table {
+    width: 100%;
+    min-width: 510px;
+    border-collapse: collapse;
+    color: #304335;
+    font-size: 10px;
+    text-align: left;
+}
+
+.schedule-table th {
+    padding: 9px 8px;
+    background: #EAEDE2;
+    color: #536455;
+    font-size: 9px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.schedule-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #E6E1D6;
+    background: #FFFCF6;
+    white-space: nowrap;
+}
+
+.schedule-table tbody tr:hover td {
+    background: #F0F2E8;
+}
+
+.schedule-table tbody td[colspan] {
+    padding: 18px 10px;
+    color: #6D786B;
+    text-align: center;
+    white-space: normal;
+}
+
+/* Keep the scheduling view usable on smaller screens */
+@media (max-width: 760px) {
+    .schedule-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .schedule-summary-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+    .schedule-metrics {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+
+/* CPU Scheduling configuration controls */
+#scheduling-config {
+    display: grid;
+    gap: 9px;
+    margin-top: 12px;
+}
+
+#scheduling-config[hidden],
+#scheduling-workspace[hidden],
+#quantum-config[hidden] {
+    display: none !important;
+}
+
+#scheduling-config select {
+    width: 100%;
+    min-height: 40px;
+    padding: 9px 11px;
+    border: 1px solid #D9D8CA;
+    border-radius: 7px;
+    background: #F7F4EC;
+    color: var(--text);
+    font: inherit;
+    font-size: 11px;
+}
+
+#scheduling-config select:focus {
+    border-color: #79A183;
+    outline: 2px solid rgba(71, 125, 98, .15);
+}
+
+#scheduling-config .panel-description {
+    margin: 0;
+}
+
+#scheduling-config .schedule-table-wrap {
+    overflow-x: auto;
+}
+
+#scheduling-config .schedule-table {
+    min-width: 0;
+    width: 100%;
+    table-layout: fixed;
+}
+
+#scheduling-config .schedule-table th,
+#scheduling-config .schedule-table td {
+    padding: 8px 5px;
+}
+
+#scheduling-config .schedule-table th:first-child,
+#scheduling-config .schedule-table td:first-child {
+    width: 22%;
+}
+
+#scheduling-config .schedule-table input {
+    width: 100%;
+    min-width: 0;
+    min-height: 35px;
+    padding: 6px;
+    font-size: 11px;
+}
+
+@media (max-width: 520px) {
+    #scheduling-config .schedule-table th,
+    #scheduling-config .schedule-table td {
+        padding: 6px 3px;
+    }
+
+    #scheduling-config .schedule-table input {
+        padding: 5px 3px;
+        font-size: 10px;
+    }
+}
+
+
+/* Thread Scheduler configuration controls */
+#thread-scheduler-config {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 12px;
+}
+
+#thread-scheduler-config .eyebrow {
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+#thread-scheduler-config label:not(.thread-mutex-option) {
+    display: block;
+    margin: 10px 0 6px;
+}
+
+/* Match the existing financial input fields */
+#thread-scheduler-config select {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #d8d2c5;
+    border-radius: 8px;
+    background: #f7f4ed;
+    color: #20362c;
+    font: inherit;
+    font-size: 14px;
+}
+
+#thread-scheduler-config select:focus {
+    outline: 2px solid #2e7451;
+    outline-offset: 2px;
+    border-color: #2e7451;
+}
+
+/* Keep the mutex checkbox compact and aligned with its label */
+#thread-scheduler-config .thread-mutex-option {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 8px 0 12px;
+    padding: 12px;
+    border: 1px solid #d8d2c5;
+    border-radius: 8px;
+    background: #f7f4ed;
+    cursor: pointer;
+}
+
+#thread-scheduler-config input[type="checkbox"] {
+    appearance: auto;
+    -webkit-appearance: checkbox;
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-height: 18px !important;
+    max-width: 18px;
+    margin: 0;
+    padding: 0;
+    flex: 0 0 18px;
+    accent-color: #2e7451;
+    cursor: pointer;
+}
+
+
+/* Improve heading contrast in the scheduling workspaces */
+#thread-scheduler-workspace .lane-title,
+#scheduling-workspace .lane-title {
+    color: #263b30 !important;
+}
+
+#thread-scheduler-workspace .lane-title > span:first-child,
+#scheduling-workspace .lane-title > span:first-child {
+    color: #263b30 !important;
+}
+
+/* Keep secondary timeline labels readable */
+#thread-scheduler-workspace .lane-title .live-label,
+#scheduling-workspace .lane-title .live-label {
+    color: #53685b !important;
+}
+
+/* Make CPU Scheduling's IDLE segment readable */
+#scheduling-workspace .gantt-segment.process-idle {
+    background: #e5e2d8 !important;
+    color: #263b30 !important;
+    border: 1px dashed #7a867d;
+}
+
+/* Prevent inherited white text in any empty Gantt state */
+#thread-scheduler-workspace .gantt-chart .empty-state,
+#scheduling-workspace .gantt-chart .empty-state {
+    color: #263b30;
+}
+
+#thread-scheduler-workspace .gantt-chart .empty-state p,
+#scheduling-workspace .gantt-chart .empty-state p {
+    color: #58695e;
+}
+
+
+/* Thread Scheduler: readable Gantt segment labels */
+#thread-scheduler-workspace .gantt-chart .gantt-segment {
+    color: #243b2e !important;
+    font-weight: 700;
+    text-shadow: none !important;
+    opacity: 1;
+}
+
+/* T1 operation blocks */
+#thread-scheduler-workspace .gantt-chart .gantt-segment.thread-t1 {
+    background-color: #dcebe0 !important;
+    color: #243b2e !important;
+    border: 1px solid #a4c3ad;
+}
+
+/* T2 operation blocks */
+#thread-scheduler-workspace .gantt-chart .gantt-segment.thread-t2 {
+    background-color: #f0e4ce !important;
+    color: #49391f !important;
+    border: 1px solid #d5bf96;
+}
+
+/* Keep the CPU Scheduling IDLE label readable too */
+#scheduling-workspace .gantt-chart .gantt-segment.process-idle {
+    background-color: #e5e2d8 !important;
+    color: #263b30 !important;
+    border: 1px dashed #7a867d;
+    text-shadow: none !important;
+    opacity: 1;
+}
