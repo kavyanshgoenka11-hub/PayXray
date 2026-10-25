@@ -7,7 +7,7 @@ PayXray is an educational web application that demonstrates important Operating 
 ## Project Links
 
 - **GitHub repository:** https://github.com/kavyanshgoenka11-hub/PayXray
-- **Live implementation:** _Add the successful Vercel deployment URL here._
+- **Live implementation:** https://pay-xray-ppsgnin0j-kavyanshgoenka11-hubs-projects.vercel.app
 
 ## Objectives
 
